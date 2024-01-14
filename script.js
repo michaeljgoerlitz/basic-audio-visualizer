@@ -28,6 +28,32 @@ function animate() {
     x = 0;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     analyser.getByteFrequencyData(dataArray);
+    
+    drawAnalyser({
+        bufferLength,
+        dataArray,
+        barWidth
+    })
+
+    requestAnimationFrame(animate);
+}
+
+function drawAnalyser({
+    bufferLength,
+    dataArray,
+    barWidth
+}) {
+    let barHeight;
+    for (let i = 0; i < bufferLength; i++) {
+        barHeight = dataArray[i];
+        const red = (i * barHeight) / 10;
+        const green = i * 4;
+        const blue = barHeight / 4 - 12;
+        ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
+        ctx.fillRect(canvas.width / 2 - x, canvas.height - barHeight, barWidth, barHeight);
+        x += barWidth;
+    }
+
     for (let i = 0; i < bufferLength; i++) {
         barHeight = dataArray[i];
         const red = (i * barHeight) / 10;
@@ -37,8 +63,6 @@ function animate() {
         ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
         x += barWidth;
     }
-
-    requestAnimationFrame(animate);
 }
 
 animate();
