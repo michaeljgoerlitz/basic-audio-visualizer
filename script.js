@@ -30,7 +30,10 @@ function animate() {
     analyser.getByteFrequencyData(dataArray);
     for (let i = 0; i < bufferLength; i++) {
         barHeight = dataArray[i];
-        ctx.fillStyle = "white";
+        const red = (i * barHeight) / 10;
+        const green = i * 4;
+        const blue = barHeight / 4 - 12;
+        ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
         ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
         x += barWidth;
     }
